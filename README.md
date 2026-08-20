@@ -2,8 +2,8 @@
 Repositorio Videojuegos
 
 
-Equipo CIC
--Christian Velazquez
+Equipo CIC<br>
+-Christian Velazquez: https://github.com/imartinez31/CIC/tree/main/Christian
 
 -Carlos Campos : https://github.com/imartinez31/CIC/tree/main/Carlos
 
