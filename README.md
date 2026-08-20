@@ -5,7 +5,7 @@ Repositorio Videojuegos
 Equipo CIC
 -Christian Velazquez
 -Carlos Campos
--Ian Martinez
+-Ian Martinez: https://github.com/imartinez31/CIC/tree/main/Ian
 
 Intereses
 Inducirnos en la historia y cultura del entorno de los videojuegos.
