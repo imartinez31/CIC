@@ -8,4 +8,4 @@ Adentrarme en comprender todo lo que hay detrás del diseño del mismo, como sus
 Muy entretenido y de mucho aprendizaje
 
 **Incluye una foto de tu rostro (uso académico interno).**
-<img width="1024" height="1280" alt="WhatsApp Image 2026-08-12 at 5 01 39 PM (1)" src="https://github.com/user-attachments/assets/6708abf5-a6fc-4860-9949-b353d6759798" />
+<img width="124" height="128" alt="WhatsApp Image 2026-08-12 at 5 01 39 PM (1)" src="https://github.com/user-attachments/assets/6708abf5-a6fc-4860-9949-b353d6759798" />
