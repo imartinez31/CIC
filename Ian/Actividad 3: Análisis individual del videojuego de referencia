@@ -1,0 +1,49 @@
+# Análisis Conceptual: Subway Surfers
+
+## 1. Selección del videojuego
+
+**Juego:** Subway Surfers
+**Desarrollador:** SYBO Games / Kiloo (2012)
+**Plataforma:** Móvil (iOS, Android)
+
+Subway Surfers es un *endless runner* (corredor infinito) en el que el jugador controla a un personaje que huye corriendo sobre vías de tren, esquivando obstáculos, recolectando monedas y power-ups, mientras un guardia e inspector lo persiguen. No tiene un final formal: el objetivo es sobrevivir el mayor tiempo posible y conseguir la puntuación más alta.
+## 2. Análisis conceptual
+
+### 2.1 ¿Cómo se clasifica el juego?
+
+Siguiendo a **Clarke, Lee y Clark (2017)** y a **Arsenault (2009)**, no existe una única clasificación "correcta" para un juego: distintas fuentes (tiendas de aplicaciones, bases de datos, jugadores) pueden etiquetar el mismo juego de formas distintas, y ninguna es más "verdadera" que otra. Subway Surfers suele aparecer bajo etiquetas como:
+
+- **Arcade / Endless Runner** (clasificación por mecánica de jugabilidad)
+- **Casual** (clasificación por público objetivo y sesión de juego corta)
+- **Acción** (clasificación amplia, y como señala Clarke et al., una de las etiquetas "cajón de sastre" más sobreutilizadas en la industria)
+
+Si aplicamos la distinción de **Arsenault** entre **géneros interactivos** (basados en la mecánica: correr, esquivar, deslizar) y **géneros temáticos/iconográficos** (basados en la ambientación: mundo urbano, grafiti, trenes, ciudades reales), Subway Surfers se apoya casi exclusivamente en el primer eje. El componente temático (la estética urbana y las ciudades que rota el juego cada cierto tiempo) es decorativo y cambiante, no estructural: el juego seguiría siendo "el mismo juego" en cualquier ciudad del mundo.
+
+Usando el marco de **Faisal y Peltoniemi (2018)**, Subway Surfers es un caso de **pertenencia "nítida"** a un género (genre crisping) más que de mezcla genuina (*genre straddling*): sus mecánicas centrales (correr, esquivar, saltar/deslizar, recolectar) están tan alineadas con el arquetipo del *endless runner* que hay poca ambigüedad sobre a qué categoría pertenece, a diferencia de juegos que combinan mecánicas de géneros muy distintos (como un RPG-shooter).
+
+### 2.2 ¿Qué mezcla o rompe géneros?
+
+Subway Surfers no rompe géneros de forma radical, pero sí incorpora elementos de otros:
+
+- **Elementos de coleccionismo/progresión** (propios de juegos de gestión o RPG ligeros): monedas, misiones diarias, desbloqueo de personajes y tablas (hoverboards), sistema de niveles de personaje.
+- **Elementos de "juego social/estacional"**: eventos temáticos ligados a fechas o colaboraciones con otras marcas, algo más cercano a la lógica de juegos como servicio (*games as a service*) que a la lógica clásica del arcade.
+
+Siguiendo a **Qaffas (2020)**, quien documenta cómo los diseñadores combinan géneros deliberadamente para atraer más audiencia, la incorporación de sistemas de coleccionismo y misiones en Subway Surfers puede leerse como una estrategia de retención: el "correr" puro del *endless runner* clásico (como Canabalt, su antecesor conceptual) se combina con mecánicas de recompensa variable típicas de juegos free-to-play, ampliando el público más allá de quien solo busca el desafío de la habilidad motriz.
+
+### 2.3 ¿Qué reglas y acciones estructuran el juego?
+
+Aplicando el marco de **Schell (Cap. 3)**, podemos identificar varias de sus diez cualidades de los juegos en Subway Surfers:
+
+- **Reglas simples y claras** (Q4): cuatro gestos táctiles —deslizar arriba (saltar), abajo (rodar), izquierda/derecha (cambiar de vía)— definen todo el espacio de acción del jugador.
+- **Conflicto** (Q3): la persecución constante del guardia genera tensión, aunque el juego nunca puede "vencer" definitivamente al perseguidor; el conflicto es indefinido, no resoluble.
+- **Puede perderse, pero no "ganarse"** (matiz sobre Q5): al no tener un final, la condición de derrota (chocar con un obstáculo) es el único desenlace posible; esto es coherente con la estructura típica del *endless runner*, un género que invierte la lógica tradicional de "meta a alcanzar" por "tiempo/distancia a maximizar".
+
+Usando la **Lente del Valor Endógeno** de Schell: las monedas tienen valor endógeno claro, porque sirven para comprar power-ups y personajes que a su vez facilitan sobrevivir más tiempo o consiguen más monedas —a diferencia del ejemplo de Bubsy que menciona Schell, aquí el "coleccionable" sí retroalimenta el sistema de juego. Los power-ups (imán, zapatillas de salto, monopatín de escape) generan micro-momentos de variación dentro de la repetición estructural del *runner*.
+
+### 2.4 ¿Qué experiencia busca generar?
+
+Retomando la **Lente de la Experiencia Esencial** de Schell (Cap. 2): la pregunta no es "qué mecánicas tiene el juego" sino "qué se siente al jugarlo". La experiencia esencial de Subway Surfers parece construida en torno a:
+
+- **Reflejos y flow de corta duración**: sesiones de pocos minutos que generan un estado de concentración inmediata (deslizar-reaccionar-deslizar), sin la carga cognitiva de planificación a largo plazo.
+- **Sensación de fuga/velocidad**: la estética de movimiento constante hacia adelante, la música rítmica y la persecución generan una experiencia de urgencia placentera, más cercana a la adrenalina que a la resolución de problemas complejos (aunque, siguiendo la definición de Schell de "juego como resolución de problemas con actitud lúdica", el problema que resuelve el jugador es simple y repetitivo: "¿puedo reaccionar a tiempo?").
+- **Progreso acumulativo entre sesiones**: aunque cada partida individual es efímera, el sistema de misiones y desbloqueos genera una sensación de avance a largo plazo que trasciende la partida — un tipo de experiencia que **Clarke et al.** señalarían como típica de la "colonización de género" (mezclar convenciones de distintos tipos de juego para generar retención).
