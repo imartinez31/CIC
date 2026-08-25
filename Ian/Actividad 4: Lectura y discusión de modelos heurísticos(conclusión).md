@@ -1,1 +1,4 @@
 Un juego puede tener excelente jugabilidad avanzada (PLAY) pero fracasar si el jugador inexperto no logra superar los primeros 10-20 minutos (GAP). Esto reposiciona el diseño del tutorial: no es un añadido menor de última hora, sino una pieza central del diseño conceptual, ya que de eso depende que el jugador llegue siquiera a experimentar el resto del juego.
+
+GAP es la clase de manejo: ¿el instructor te explica bien los controles?, ¿te deja practicar en un lote vacío antes de salir a la calle (sandbox)?, ¿te da ayuda si te trabas (scaffolding)?, ¿te sientes capaz de seguir aprendiendo (autoeficacia)?
+PLAY es evaluar si, ya sabiendo manejar, el coche en sí es bueno: ¿tiene buena suspensión (controles)?, ¿el motor responde bien (feedback)?, ¿el viaje es entretenido y no monótono (enduring play)?, ¿el tablero es claro (screen layout)?
