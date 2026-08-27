@@ -1,4 +1,5 @@
 **Eco**
+
 **-Concepto**
 
 Un juego de puzles y exploración en 2D donde el jugador controla a un personaje que se mueve por cuevas completamente oscuras. No hay luz. La única forma de "ver" el entorno es emitir un pulso de sonido (como un sonar) que revela brevemente las paredes, plataformas y peligros a su alrededor, dibujándolos como líneas que se desvanecen en 2-3 segundos.
