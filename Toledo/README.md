@@ -14,4 +14,4 @@ Significa desde el diseño y planificación, hasta la creación de los elementos
 Planificando la idea, bocetando y diseñando los elementos visuales, y aplicando las funcionalidades.
 
 ## Foto de mi rostro (uso interno)
-![Mi Rostro]((https://github.com/ToIedo/ludologia./blob/main/toledo./miRostro.JPEG?raw=true))
+![Mi Rostro](https://github.com/ToIedo/ludologia./blob/main/toledo./miRostro.JPEG?raw=true)
