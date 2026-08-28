@@ -1,17 +1,21 @@
-# CIC
-Repositorio Videojuegos
+# **CIC**  
+## **Repositorio Videojuegos**
 
+---
 
-Equipo CIC<br>
--Christian Velazquez: https://github.com/imartinez31/CIC/tree/main/Christian
+### Equipo CIC:  
+- Christian Velazquez: *https://github.com/imartinez31/CIC/tree/main/Christian*
 
--Carlos Campos : https://github.com/imartinez31/CIC/tree/main/Carlos
+- Carlos Campos : *https://github.com/imartinez31/CIC/tree/main/Carlos*
 
--Ian Martinez: https://github.com/imartinez31/CIC/tree/main/Ian
+- Ian Martinez: *https://github.com/imartinez31/CIC/tree/main/Ian*
 
-Intereses
-Inducirnos en la historia y cultura del entorno de los videojuegos.
-Aprender acerca del diseño y las fases de creación de un videojuego.
-Conocimiento acerca del manejo de controles o comandos con los que se pueda ejecutar el videojuego.
+- Enrique Toledo: *https://github.com/imartinez31/CIC/tree/main/Toledo*
 
+---
+
+### Intereses:  
+* Inducirnos en la historia y cultura del entorno de los videojuegos.
+* Aprender acerca del diseño y las fases de creación de un videojuego.
+* Conocimiento acerca del manejo de controles o comandos con los que se pueda ejecutar el videojuego.
 
