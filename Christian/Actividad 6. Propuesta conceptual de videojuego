@@ -1,0 +1,32 @@
+Propuesta de videojuego: "Eco"
+
+Mecánica principal: el jugador no ve el entorno directamente; controla a un personaje ciego en una cueva y
+emite pulsos de sonido (tocando/soltando el botón) que revelan brevemente la geometría del entorno como ondas visuales
+que se desvanecen en segundos.
+
+Objetivo del jugador: llegar a la salida de cada cueva evitando caer en pozos y sin ser detectado por criaturas
+que también reaccionan al sonido (entre más pulsos usas, más atraen a los enemigos).
+
+Reglas básicas:
+
+Cada pulso de sonido cuesta "energía" limitada que se recarga poco a poco.
+El entorno solo es visible unos segundos después de cada pulso; pasado ese tiempo, vuelve a la oscuridad.
+Los enemigos se mueven hacia el origen del último pulso emitido.
+Caer en un pozo o ser tocado por un enemigo reinicia el nivel desde el último punto seguro.
+
+Experiencia buscada
+
+El jugador debe sentir tensión calculada: la necesidad de moverse con cautela, alternando entre la seguridad de "ver" 
+el entorno y el riesgo de delatar su posición. La mecánica genera esto directamente porque cada pulso es una decisión 
+con costo doble (gasta energía Y atrae peligro), lo que obliga a planear en vez de reaccionar por reflejo.
+La sensación buscada es de exploración vulnerable, parecida a moverse a tientas en la oscuridad real, no de acción rápida.
+
+Justificación de coherencia (marco MDA)
+
+Mecánica → Dinámica: el pulso limitado y el atractivo sonoro para enemigos generan la dinámica de 
+"mirar con miedo a ser visto", es decir, cada exploración se vuelve una decisión de riesgo-beneficio en tiempo real.
+Dinámica → Estética: esa dinámica de exploración cautelosa produce la estética de tensión/suspenso
+(una de las categorías clásicas de "diversión" en MDA), reforzada por la fragilidad del personaje (reinicio al morir).
+Reglas → Objetivo: las reglas (energía limitada, enemigos atraídos por sonido) están diseñadas
+específicamente para que el objetivo simple —llegar a la salida— nunca se sienta trivial,
+ya que cada regla empuja al jugador de vuelta hacia la cautela.
