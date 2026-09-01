@@ -1,1 +1,47 @@
-.......
+GAP (Game Approachability Principles — Desurvire & Wiberg): lista de heurísticas para diseñar tutoriales 
+y primeros niveles, pensada en jugadores casuales/inexpertos. Sus 11 principios: Práctica, 
+Demostración de tipo, Demostración de acción, Autoeficacia, Scaffolding (ayuda progresiva), 
+Sandbox (practicar sin consecuencias), PLAY (como subconjunto de jugabilidad), Coolness/entretenimiento, 
+Información a tiempo, Transferencia de conocimiento, y Maestría propia.
+
+PLAY (Principles of Game Playability — Desurvire & Wiberg): heurísticas más amplias,
+aplicables a todo el juego (no solo al inicio). Se agrupan en tres categorías: 
+Game Play (retos, metas claras, ritmo, variedad, sensación de control), Coolness/Entretenimiento/Inmersión emocional, 
+y Usabilidad/Mecánicas (feedback, controles, layout, prevención de errores, inmersión narrativa).
+
+Actividad: ideas previas vs. modelos teóricos
+
+1. Ideas previas (lo que ya se suele pensar de un buen videojuego)
+
+Que sea "divertido" y "adictivo", aunque sin definir bien por qué.
+Que tenga buenos gráficos o una historia atractiva.
+Que no sea ni muy fácil ni muy difícil.
+Que el tutorial "enseñe a jugar" sin estorbar.
+
+2. Conceptos nuevos que aportan los modelos
+
+GAP distingue explícitamente etapas de aprendizaje (demostración → práctica → refuerzo → scaffolding),
+en vez de solo decir "el tutorial debe ser bueno".
+Introduce autoeficacia: el jugador necesita sentirse capaz, no solo recibir instrucciones.
+Sandbox sin consecuencias: practicar habilidades nuevas sin perder ni fallar de verdad.
+PLAY separa jugabilidad en categorías concretas y medibles (metas claras, feedback inmediato, prevención de errores,
+ritmo), no como una sensación vaga de "diversión".
+Ambos modelos vienen de comparar juegos evaluados con Heurística vs. pruebas con usuarios reales,
+y muestran que cada método encuentra problemas distintos (uno predice, el otro valida).
+
+3. Aplicaciones posibles al diseño
+
+Usar el checklist de GAP en la fase conceptual del tutorial, antes de programar nada.
+Aplicar PLAY como lista de revisión durante todo el desarrollo, no solo al inicio.
+Combinar heurística (GAP/PLAY) con pruebas de usuario reales, porque cada una detecta cosas diferentes
+(la heurística predice problemas de aprendizaje; el testeo real detecta frustración concreta).
+Revisar que el juego dé información "on demand and in time" (justo cuando se necesita, y repetible si se olvida).
+
+4. Conclusión individual (ejemplo que puedes adaptar)
+"Antes pensaba que un buen tutorial solo debía explicar los controles.
+Con GAP entendí que enseñar bien implica un ciclo de demostración, práctica sin riesgo y refuerzo positivo, 
+y que la autoeficacia del jugador es tan importante como la claridad de las instrucciones.
+Con PLAY vi que 'jugabilidad' no es una sensación general, sino un conjunto de heurísticas concretas
+(metas, feedback, ritmo) que se pueden revisar una por una. Aplicaría esto diseñando primero el checklist de aprendizaje
+(GAP) y después evaluando la experiencia completa con PLAY."
+
