@@ -1,0 +1,28 @@
+Perfil de jugador y estructura del juego
+
+Perfil del jugador
+
+Le gusta explorar y sentir tensión (no competir ni socializar).
+Juega en PC/consola, con audífonos (el sonido es clave).
+Sesiones cortas (10-20 min).
+Nivel casual-intermedio: no necesita reflejos rápidos, solo paciencia.
+
+Plataforma y experiencia
+Juego de exploración tensa, en sesiones cortas, sin multijugador ni marcadores de competencia.
+
+Estructura del juego
+
+Loop: emitir sonido, ver el entorno un momento, decidir por dónde ir, avanzar con cuidado, repetir.
+Niveles: cuevas cortas y separadas, no mundo abierto (así encajan con sesiones breves).
+Progresión: los niveles se ponen más difíciles (cuevas más grandes, más peligro), no subes de nivel ni ganas power-ups.
+Ritmo: lento y tenso, no de acción rápida. Morir reinicia rápido para no cortar el ritmo de la sesión.
+
+Por qué estas decisiones tienen sentido
+
+Schell: todo el juego (mecánica, sensación buscada, uso del sonido) debe ir en la misma dirección.
+Aquí todo apunta a generar tensión al explorar; si quitas el buen audio, el juego deja de tener sentido.
+Rogers: la plataforma y la duración de las sesiones no son detalles menores, sino parte del diseño.
+Por eso el juego se divide en niveles cortos, en vez de ser un mundo abierto que pediría sesiones largas.
+McKechnie-Martin/Dobrowolski: en vez de diseñar "para todos", se eligen solo dos motivaciones (exploración y tensión)
+y cada parte del juego se revisa: si algo no ayuda a esas dos cosas, se quita, para no meter elementos que no tienen razón
+de estar.
