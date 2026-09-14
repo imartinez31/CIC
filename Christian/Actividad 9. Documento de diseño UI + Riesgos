@@ -1,0 +1,41 @@
+Concepto de UI (HUD, canales de información y feedback)
+
+No hay HUD tradicional con números o barras visibles todo el tiempo, porque eso rompería la sensación de estar a ciegas en la cueva. La información llega por canales indirectos:
+
+Canal visual: al emitir un pulso, el entorno se dibuja como líneas u ondas que se desvanecen en pocos segundos. Es la única "vista" que tiene el jugador.
+
+Canal sonoro: cada tipo de superficie o criatura responde con un sonido distinto al pulso (eco corto = pared cercana, eco largo = espacio abierto, gruñido = criatura cerca). El audio hace parte del trabajo que normalmente haría un HUD.
+
+Canal de energía: en vez de una barra numérica, la energía disponible para pulsar se muestra como un brillo tenue alrededor del personaje que se apaga gradualmente. Es visible pero discreto.
+
+Feedback de peligro: cuando una criatura se acerca, el sonido ambiental cambia sutilmente (más grave, más cercano) antes de que sea visible en un pulso, dando al jugador una oportunidad de reaccionar sin depender de texto o iconos de alerta.
+
+La idea es que toda la interfaz esté integrada al mundo del juego (diegética), reforzando la sensación de estar orientándose con los sentidos y no leyendo datos en una pantalla.
+
+Loop principal de interacción
+
+Emitir pulso (gasta energía) → el entorno se revela brevemente → el jugador escucha/observa para ubicar riesgos y rutas → decide moverse o esconderse → la energía se recarga con el tiempo → se repite.
+
+Dinámicas asociadas y cómo la UI las regula
+
+Tensión por decisión: como el pulso también atrae criaturas, la UI (el brillo de energía y el sonido ambiental) le da al jugador la información mínima para decidir cuándo vale la pena arriesgarse a pulsar.
+
+Memoria espacial: como la vista se desvanece, el jugador debe recordar mentalmente el mapa recién visto. La UI apoya esto dejando rastros visuales tenues que se desvanecen más lento que el resto (así no se vuelve imposible, pero tampoco trivial).
+
+Sigilo reactivo: el cambio sutil en el sonido ambiental antes de que una criatura sea visible regula el ritmo de tensión, dando siempre una señal de aviso justo a tiempo (similar al principio de "información a tiempo" de GAP).
+
+Riesgo principal del diseño
+
+El mayor riesgo es de experiencia, no técnico: que el jugador no logre "leer" el entorno solo con pulsos de sonido y sienta que se mueve a ciegas de verdad, generando frustración en vez de tensión disfrutable. Es decir, existe el riesgo de que el balance entre "dar suficiente información" y "mantener la incertidumbre" no funcione en la práctica.
+
+Cómo se validaría con un prototipo
+
+Se haría un prototipo mínimo de un solo nivel (una cueva pequeña con un pozo y una criatura) y se probaría con varias personas sin explicarles nada del sistema, observando: si logran orientarse solo con el pulso y el sonido, cuánto tardan en entender la mecánica sin instrucciones, y en qué momentos expresan frustración en vez de tensión (parecido al método de user testing "think aloud" usado para evaluar GAP). Si la mayoría se pierde o no entiende el pulso en los primeros minutos, se ajustaría la duración de la visión revelada o se añadirían pistas sonoras más claras.
+
+Trade-off explícito
+
+Más claridad en el pulso (visión que dura más, sonidos más obvios) haría el juego más accesible y menos frustrante, pero reduciría la tensión y la sensación de vulnerabilidad que es el corazón de la experiencia buscada. Se optó por priorizar la tensión sobre la accesibilidad total, aceptando que el juego no es para todo tipo de jugador.
+
+Justificación de decisiones
+
+La UI diegética (sin HUD numérico) se justifica porque cualquier información "de más" (barras, mapas fijos) rompería la coherencia entre mecánica y experiencia buscada: el juego trata sobre no ver con claridad, así que la interfaz debe sentirse parte de esa limitación, no una ventaja añadida encima de ella. El trade-off de priorizar tensión sobre accesibilidad es coherente con el perfil de jugador ya definido (explorador paciente, no jugador casual que busca facilidad inmediata), y el riesgo elegido para validar primero es el de experiencia porque, si el sistema de pulsos no comunica lo suficiente, ninguna otra decisión de diseño (niveles, progresión, narrativa) tendría sentido sobre una base que no funciona.
