@@ -1,3 +1,231 @@
+# PÁGINA 1: TÍTULO, HIGH CONCEPT Y LOGLINE
+
+### 1. Metadatos del Proyecto
+* **Título Oficial:** *Kroma*
+* **Género:** Puzle 2D minimalista / Lógica espacial determinista
+* **Plataformas Objetivo:** Web (HTML5 / Canvas), Dispositivos Móviles (Android / iOS)
+* **Público Objetivo:** Tweens y Teens tempranos (10 a 15 años); jugadores tipo *Achiever* orientados a la deducción lógica, patrones visuales y resolución sin presión temporal
+* **Motor / Stack Tecnológico:** Godot Engine 4 (o Phaser 3 en TypeScript / HTML5 Canvas)
+
+---
+
+### 2. Logline
+> *En una matriz digital en reposo, desliza bloques inerciales de energía pura para sintetizar colores secundarios y encajarlos en receptores terminales que transforman el tablero con cada acierto.*
+
+---
+
+### 3. High Concept
+**Kroma** es un videojuego de lógica espacial bidimensional en cuadrícula ortogonal minimalista (de 5×5 a 8×8 celdas) donde los bloques activos carecen de fricción interna y se desplazan con inercia continua hasta colisionar. El diseño combina el desplazamiento inercial discreto con la síntesis cromática determinista y la metamorfosis del tablero: cada bloque encajado exitosamente deja de ser una pieza móvil para petrificarse como un nuevo muro rígido, alterando las rutas y ángulos posibles para las piezas restantes.
+
+---
+
+### 4. Pilares de Diseño
+* **Determinismo Espacial Absoluto (Cero Azar):** Toda acción produce un resultado matemático predecible en cuatro ejes cardinales, sin físicas continuas imprecisas ni dispersión.
+* **Transformación Topológica Progresiva:** Resolver no consiste en vaciar la matriz; cada acierto reduce el espacio transitable y genera nuevos puntos de apoyo mecánicos para maniobras a 90°.
+* **Seguridad Psicológica y Experimentación Heurística:** Ausencia total de cronómetros, vidas o penalizaciones. Respaldado en una pila de *Undo* ilimitado, el error se convierte en una hipótesis descartada dentro del proceso deductivo.
+
+---
+
+### 5. Pitch de 1 Minuto
+* **¿Qué experiencia ofrece?** Una experiencia de concentración reflexiva (*Mindful Puzzle Solving*), donde el usuario restaura el orden y la coherencia visual de un sistema apagado sin estrés motriz ni castigo de tiempo.
+* **¿Cuál es el Core Loop?** Analizar la disposición geométrica, deducir trayectorias en reversa, deslizar bloques con inercia, fusionar colores primarios o usarlos como tope, y encajar cada bloque en su meta para convertirlo en un nuevo obstáculo físico hasta estabilizar el sector.
+* **¿Cuál es el riesgo técnico principal?** El manejo de bloqueos irreversibles (*deadlocks silenciosos*) y la verificación algorítmica de la solvencia matemática en el diseño de niveles.
+* **¿Por qué es viable en 3 meses?** Porque opera sobre una matriz discreta 2D en una sola pantalla estática (sin scroll, sin físicas complejas continuas, sin cinemáticas ni multijugador), permitiendo disponer de un *greybox* 100% jugable desde la primera semana[cite: 1, 2].
+
+# PÁGINA 2
+
+---
+
+# PÁGINA 3
+
+---
+
+# PÁGINA 4: FLUJO DE JUEGO Y CORE LOOP (CON MÁQUINA DE ESTADOS)
+
+### 1. Representación del Bucle de Interacción Principal
+
+```
+       ┌────────────────────────────────────────────────────────┐
+       │             1. EVALUACIÓN Y FEEDFORWARD                │
+       │    Lectura visual de la matriz, glifos y Weenies lumínicos│
+       └──────────────────────────┬─────────────────────────────┘
+                                  │
+                                  ▼
+       ┌────────────────────────────────────────────────────────┐
+       │             2. BACKTRACKING MENTAL                     │
+       │    Inferencia inversa: meta receptora ◄── obstáculo    │
+       └──────────────────────────┬─────────────────────────────┘
+                                  │
+                                  ▼
+       ┌────────────────────────────────────────────────────────┐
+       │             3. ENTRADA VECTORIAL (SWIPE / KEY)         │
+       │    Inyección de vector unitario (N, S, E, O)            │
+       └──────────────────────────┬─────────────────────────────┘
+                                  │
+                                  ▼
+       ┌────────────────────────────────────────────────────────┐
+       │             4. TRANSICIÓN MECÁNICA DISCRETA            │
+       │    Desplazamiento inercial celda a celda con Raycast   │
+       └──────────────────────────┬─────────────────────────────┘
+                                  │
+        ┌─────────────────────────┴─────────────────────────┐
+        ▼                                                   ▼
+┌───────────────────────────────┐   ┌───────────────────────────────┐
+│     COLISIÓN / INTERACCIÓN    │   │      RESOLUCIÓN DE ESTADO     │
+│ • Bloque Compatible ──► MERGE │   │ • Encaje en Meta  ──► SLOT    │
+│ • Muro / Inerte     ──► FRENO │   │   (Conversión a Muro Rígido)  │
+│ • Abismo            ──► VOID  │   │                               │
+└───────────────┬───────────────┘   └───────────────┬───────────────┘
+                │                                   │
+                └─────────────────┬─────────────────┘
+                                  │
+                                  ▼
+       ┌────────────────────────────────────────────────────────┐
+       │             5. FEEDBACK MULTIMODAL & VERIFICACIÓN      │
+       │    Respuesta háptica/auditiva + Chequeo de Condiciones │
+       └──────────────────────────┬─────────────────────────────┘
+                                  │
+          ┌───────────────────────┴───────────────────────┐
+          ▼                                               ▼
+┌──────────────────┐                            ┌──────────────────┐
+│  NIVEL RESUELTO  │                            │ NIVEL NO RESUELTO│
+│  Todas las metas │                            │  Estado activo   │
+│   estabilizadas  │                            └─────────┬────────┘
+└─────────┬────────┘                                      │
+          │                         ┌─────────────────────┴─────────────────────┐
+          ▼                         ▼                                           ▼
+┌──────────────────┐      ┌──────────────────┐                        ┌──────────────────┐
+│ AVANCE DE SECTOR │      │ ITERACIÓN VÁLIDA │                        │ DEADLOCK / ERROR │
+│  Transición UI   │      │ Retorno a Paso 1 │                        │  Pulsar [UNDO]   │
+└──────────────────┘      └──────────────────┘                        └──────────────────┘
+```
+### 2. Especificación Formal de la Máquina de Estados Finita (FSM)
+
+* **Estado IDLE (Reposo):**
+  * *Condición de Entrada:* Detección de Swipe cardinal válido en bloque activo.
+  * *Estado Siguiente:* SLIDING.
+  * *Salida Concreta:* Bloqueo de nuevos inputs; cálculo de vector director; apilado del snapshot del tablero en la Pila de Undo.
+
+* **Estado SLIDING (Desplazamiento - Camino Libre):**
+  * *Condición de Entrada:* Celda destino inmediata libre de obstáculos.
+  * *Estado Siguiente:* SLIDING.
+  * *Salida Concreta:* Actualización de posición matricial $(x, y) \to (x \pm 1, y \pm 1)$; emisión de estela visual.
+
+* **Estado SLIDING (Desplazamiento - Impacto Compatible):**
+  * *Condición de Entrada:* Celda destino contiene bloque primario compatible.
+  * *Estado Siguiente:* MERGING.
+  * *Salida Concreta:* Colapso de dos identidades en una; suma aditiva cromática; asignación del nuevo glifo identificador.
+
+* **Estado SLIDING (Desplazamiento - Freno Físico):**
+  * *Condición de Entrada:* Celda destino contiene muro estático, bloque inerte o borde perimetral.
+  * *Estado Siguiente:* IDLE.
+  * *Salida Concreta:* Freno cinemático en celda previa; disipación del vector; emisión de vibración y audio de impacto (*thud*).
+
+* **Estado SLIDING (Desplazamiento - Pérdida):**
+  * *Condición de Entrada:* Celda destino es Celda Nula (Abismo).
+  * *Estado Siguiente:* VOIDED.
+  * *Salida Concreta:* La entidad se destruye visualmente; se notifica al usuario la necesidad de retroceder jugada con Undo.
+
+* **Estado MERGING (Síntesis con Inercia):**
+  * *Condición de Entrada:* Bloque resultante conserva inercia y celda frontal libre.
+  * *Estado Siguiente:* SLIDING.
+  * *Salida Concreta:* Continúa el desplazamiento celda a celda con la nueva entidad sintetizada.
+
+* **Estado MERGING (Síntesis con Freno):**
+  * *Condición de Entrada:* Sin inercia remanente o presencia de tope frontal.
+  * *Estado Siguiente:* IDLE.
+  * *Salida Concreta:* La pieza resultante se asienta en la celda del impacto.
+
+* **Estado IDLE (Encaje en Objetivo):**
+  * *Condición de Entrada:* Posición de la pieza coincide con Receptor Meta del color/glifo exacto.
+  * *Estado Siguiente:* SLOTTED.
+  * *Salida Concreta:* Cambio estructural: la pieza pierde movilidad y se registra lógicamente como obstáculo rígido (*IsSolid = True*).
+
+* **Estado SLOTTED (Resolución de Nivel):**
+  * *Condición de Entrada:* Contador de metas pendientes en el tablero == 0.
+  * *Estado Siguiente:* LEVEL_CLEAR.
+  * *Salida Concreta:* Activación lumínica del sector; bloqueo de input de juego; apertura de botón de avance.
+
+* **Cualquier Estado activo (Rebobinado):**
+  * *Condición de Entrada:* Presión de botón [Undo] o tecla asignada.
+  * *Estado Siguiente:* REWINDING.
+  * *Salida Concreta:* Desapilado del snapshot del Stack; restauración síncrona de posiciones y estados; retorno a IDLE.
+
+---
+
+# PÁGINA 5
+
+---
+
+# PÁGINA 6
+
+---
+
+# PÁGINA 7
+
+---
+
+# PÁGINA 8
+
+---
+
+# PÁGINA 9
+
+---
+
+# PÁGINA 10: MATRIZ DE RIESGOS, TRADE-OFFS Y VIABILIDAD TÉCNICA
+
+### 1. Desglose de Riesgos Críticos del Proyecto
+
+* **Riesgo 1: Deadlocks Silenciosos (Estados Irresolubles sin Notificación)**
+  * *Tipo y Severidad:* Jugabilidad / Game Feel. Severidad Alta, Probabilidad Alta.
+  * *Impacto:* El jugador desliza una pieza clave a una esquina muerta sin posibilidad de moverla ni impactarla. Si el juego no emite respuesta, el usuario pasa minutos buscando una solución inexistente (*Loss of Agency*).
+  * *Mitigación y Validación:* Implementación de un Solver BFS (*Breadth-First Search*) en el pipeline de desarrollo. Todo nivel se valida verificando que no existan callejones sin salida accidentales o irresolubles. Respaldo directo en Undo inmediato.
+
+* **Riesgo 2: Barrera de Accesibilidad por Discromatopsia**
+  * *Tipo y Severidad:* Experiencia / Inclusión. Severidad Crítica, Probabilidad Media (~8% público masculino).
+  * *Impacto:* Imposibilidad para jugadores daltónicos de diferenciar pares clave (Rojo/Verde o Azul/Púrpura), volviendo la mecánica de síntesis frustrante o injugable.
+  * *Mitigación y Validación:* Codificación dual innegociable. Adición de glifos geométricos inscritos en alto contraste dentro de los bloques y metas (Círculo, Cuadrado, Triángulo, etc.). La lógica se sustenta simultáneamente en color y forma.
+
+* **Riesgo 3: Complejidad Exponencial y Cuello de Botella en Level Design**
+  * *Tipo y Severidad:* Producción / Alcance. Severidad Media, Probabilidad Alta.
+  * *Impacto:* Diseñar a mano tableros que mantengan solución única, curva didáctica limpia y ausencia de soluciones triviales desborda el cronograma de 8 a 12 semanas.
+  * *Mitigación y Validación:* Editor interno de niveles que ejecuta el solver en tiempo real dentro del motor. Muestra el número óptimo de movimientos (*par*) y advierte de inmediato si el puzle tiene atajos o es irresoluble.
+
+---
+
+### 2. Análisis de Trade-offs Explícitos
+
+* **Decisión 1: Identidad Visual vs. Accesibilidad**
+  * *Opción Descartada:* Pureza Hiper-Minimalista. Bloques de color plano puro sin ningún símbolo (estilo *KAMI* o abstracción pura).
+  * *Opción Implementada:* Codificación Dual. Bloques y metas con glifos geométricos de alto contraste inscritos en su interior.
+  * *Trade-off y Justificación:* Se sacrifica la pureza estética del color plano en favor de la inclusión universal, evitando la exclusión de usuarios con discromatopsias bajo estándares WCAG 2.1.
+
+* **Decisión 2: Modelo Físico vs. Determinismo**
+  * *Opción Descartada:* Física Continua (RigidBody2D). Desplazamiento por impulsos físicos y colisiones dinámicas de motor.
+  * *Opción Implementada:* Matriz Discreta con Tweens. Lógica de posiciones enteras `[x][y]` con interpolaciones puramente visuales.
+  * *Trade-off y Justificación:* Se renuncia al comportamiento orgánico de masas y rebotes para garantizar determinismo matemático absoluto, facilidad en la pila de Undo y cero bugs sub-píxel.
+
+---
+
+### 3. Justificación de Viabilidad para Producción en 3 Meses
+
+* **Cero Dependencia de Activos Complejos:** No requiere modelado 3D, animaciones cuadro a cuadro complejas ni doblaje de voz; el apartado gráfico se resuelve mediante geometría vectorial, luces 2D y shaders mínimos.
+* **Arquitectura Técnica Desacoplada:** La lógica del tablero corre sobre una matriz de datos bidimensional abstracta, permitiendo que la programación de reglas, el solver de verificación y la UI se desarrollen en paralelo sin dependencias bloqueantes.
+* **Control Estricto de Alcance (*Zero Scope Creep*):** Se excluyen formalmente del MVP funciones secundarias como generación procedural, tablas de clasificación online, modos multijugador o microtransacciones estéticas.
+---
+---
+
+
+
+
+
+
+
+
+
+
+
 # Kroma: Game Design Document (GDD v1)
 
 **Documento de Diseño Conceptual y Técnico**  
