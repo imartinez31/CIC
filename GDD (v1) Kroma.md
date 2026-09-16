@@ -226,7 +226,7 @@
 
 
 
-# Kroma: Game Design Document (GDD v1)
+# Kroma: Game Design Document (Summary)
 
 **Documento de Diseño Conceptual y Técnico**  
 **Versión:** 1.0 (Entrega Fase 1 - GitHub)  
