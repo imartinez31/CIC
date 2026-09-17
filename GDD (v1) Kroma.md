@@ -153,13 +153,126 @@
 
 ---
 
-# PÁGINA 5
+# PÁGINA 5: MECÁNICAS Y REGLAS DEL SISTEMA
+ 
+## 1. Verbos Operativos (Acciones del Jugador)
+ 
+- **Deslizar (Slide):**
+  - **Input:** Swipe direccional / flechas del teclado.
+  - **Descripción funcional:** Aplica un vector unitario cardinal (N, S, E, O) sobre el bloque seleccionado. El bloque avanza celda por celda de forma continua hasta colisionar con algo o salir del tablero. No existe movimiento parcial: una vez lanzado, el bloque no se detiene por decisión del jugador.
+- **Fusionar (Merge):**
+  - **Input:** Resultado automático de colisión.
+  - **Descripción funcional:** Ocurre cuando un bloque en movimiento impacta contra un bloque primario compatible en reposo. Ambos colapsan en una sola entidad de color resultante, que puede o no conservar inercia remanente.
+- **Encajar (Slot):**
+  - **Input:** Resultado automático de posición.
+  - **Descripción funcional:** Ocurre cuando un bloque (simple o fusionado) se detiene exactamente sobre un receptor meta cuyo glifo/color coincide. La pieza pierde movilidad de forma permanente.
+Estos tres verbos son suficientes para generar toda la profundidad del sistema: no se introducen verbos adicionales (saltar, rotar, duplicar) para mantener el determinismo y evitar ambigüedad en el estado del tablero, en línea con el pilar de diseño "Determinismo Espacial Absoluto".
+ 
+## 2. Desplazamiento Discreto (Modelo de "Física")
+ 
+Kroma no usa un motor de físicas continuo. El tablero es una matriz de datos `grid[x][y]`, y el desplazamiento se calcula por *raycast discreto* sobre esa matriz:
+ 
+- **Paso 1 — Evaluación de celda adyacente:**
+  - **Condición de Entrada:** Input direccional recibido.
+  - **Salida Concreta:** Se evalúa la celda inmediatamente adyacente en la dirección del vector.
+- **Paso 2 — Avance iterativo:**
+  - **Condición de Entrada:** Celda adyacente libre.
+  - **Salida Concreta:** El bloque se mueve una posición y se vuelve a evaluar la siguiente celda en la misma dirección, repitiendo el proceso hasta encontrar un obstáculo.
+- **Paso 3 — Interpolación visual:**
+  - **Condición de Entrada:** Movimiento lógico ya resuelto en la matriz.
+  - **Salida Concreta:** El desplazamiento visual (tween) es una interpolación puramente estética entre posiciones enteras; la lógica de juego nunca opera con coordenadas fraccionarias.
+Esto garantiza que dos jugadores que ejecuten la misma secuencia de movimientos lleguen siempre al mismo estado exacto del tablero, sin variaciones por redondeo o simulación física (requisito directo del pilar "Cero Azar").
+ 
+## 3. Matriz de Colisión (Reglas Atómicas)
+ 
+Cada vez que un bloque en movimiento (`SLIDING`) llega a una celda ocupada o especial, el sistema resuelve la interacción según esta tabla cerrada de casos, sin excepciones implícitas:
+ 
+- **Celda vacía:**
+  - **Condición de Entrada:** Celda destino sin contenido.
+  - **Resultado:** El bloque avanza y se reevalúa la siguiente celda.
+  - **Estado Siguiente:** SLIDING.
+- **Bloque primario compatible:**
+  - **Condición de Entrada:** Celda destino ocupada por bloque primario compatible.
+  - **Resultado:** Fusión cromática (suma aditiva de color).
+  - **Estado Siguiente:** MERGING.
+- **Bloque incompatible / bloque inerte:**
+  - **Condición de Entrada:** Celda destino ocupada por bloque sin síntesis posible.
+  - **Resultado:** Frenado inmediato en la celda previa.
+  - **Estado Siguiente:** IDLE.
+- **Muro rígido (incluye piezas ya SLOTTED):**
+  - **Condición de Entrada:** Celda destino marcada como sólida.
+  - **Resultado:** Frenado inmediato en la celda previa.
+  - **Estado Siguiente:** IDLE.
+- **Borde del tablero:**
+  - **Condición de Entrada:** Celda destino fuera de los límites de la matriz.
+  - **Resultado:** Frenado inmediato en la última celda válida.
+  - **Estado Siguiente:** IDLE.
+- **Celda nula (Abismo):**
+  - **Condición de Entrada:** Celda destino marcada como vacío estructural.
+  - **Resultado:** El bloque cae y se elimina del tablero.
+  - **Estado Siguiente:** VOIDED.
+- **Receptor meta con glifo/color coincidente:**
+  - **Condición de Entrada:** Celda destino es meta y coincide identidad cromática.
+  - **Resultado:** La pieza se fija como obstáculo permanente.
+  - **Estado Siguiente:** SLOTTED.
+- **Receptor meta con glifo/color distinto:**
+  - **Condición de Entrada:** Celda destino es meta pero no coincide identidad cromática.
+  - **Resultado:** Se trata como muro rígido: frena, no encaja.
+  - **Estado Siguiente:** IDLE.
+**Regla de fusión cromática (colores primarios → secundarios):**
+ 
+- Rojo + Azul → Púrpura.
+- Azul + Amarillo → Verde.
+- Amarillo + Rojo → Naranja.
+- Un bloque ya fusionado (secundario) no puede volver a fusionarse con otro bloque; solo puede encajar o actuar como freno. Esto evita árboles de combinación infinitos y mantiene el espacio de soluciones acotado para el solver.
+**Regla de inercia post-fusión:**
+ 
+- Si tras la fusión el nuevo bloque conserva recorrido libre en la misma dirección del vector original, continúa deslizándose (`MERGING → SLIDING`).
+- Si no conserva recorrido libre, se asienta en la celda de impacto (`MERGING → IDLE`).
+- Esta regla habilita la dinámica emergente de "freno de conveniencia": un jugador puede fusionar dos bloques a mitad de camino específicamente para que el resultado se detenga en un punto útil.
+## 4. Principio de Diseño Detrás de las Reglas
+ 
+Todas las reglas atómicas anteriores están escritas como funciones puras sobre el estado de la matriz (mismo input → mismo output), lo cual es lo que hace posible, en la Página 6, tanto el sistema de Undo (snapshot/restauración exacta) como la validación automática de niveles mediante el solver BFS mencionado en la matriz de riesgos.
 
----
 
-# PÁGINA 6
+# PÁGINA 6: CONDICIONES DE VICTORIA, DERROTA Y MANEJO DE ESTADOS
+ 
+## 1. Condición de Victoria
+ 
+- **Nivel Resuelto:**
+  - **Condición de Entrada:** Todas las metas receptoras del tablero están ocupadas por un bloque del glifo/color correcto (estado `SLOTTED` en el 100% de los receptores).
+  - **Salida Concreta:** Bloqueo de input adicional sobre el tablero; disparo del feedback de "sector estabilizado" (ver Página 9); habilitación del botón de avance al siguiente nivel.
+No hay condición de victoria parcial ni puntuación por eficiencia de movimientos dentro del MVP: el nivel está resuelto o no lo está, en coherencia con el pilar de "Seguridad Psicológica" (sin presión de optimizar, solo de completar).
+ 
+## 2. Kroma no tiene "Derrota" en el sentido tradicional
+ 
+Es una decisión de diseño explícita, no una omisión: no existen vidas, cronómetro ni penalización por movimiento incorrecto (pilar "Seguridad Psicológica y Experimentación Heurística"). No hay forma de "perder" el nivel de manera permanente mientras el sistema de Undo esté disponible. El único estado adverso posible es quedar en una posición **subóptima o irresoluble dentro de la partida actual**, lo cual se gestiona como error recuperable, no como derrota.
+ 
+## 3. Manejo de Estados Adversos
+ 
+- **Caso 1 — Pérdida de pieza (Abismo):**
+  - **Condición de Entrada:** Un bloque cae en una celda nula.
+  - **Estado Siguiente:** VOIDED.
+  - **Salida Concreta:** La pieza se elimina visualmente del tablero; el sistema no reinicia el nivel automáticamente, solo notifica al jugador que esa pieza ya no está disponible y que probablemente necesita retroceder con Undo si era necesaria para completar una meta.
+- **Caso 2 — Deadlock (bloqueo irresoluble en tiempo real):**
+  - **Condición de Entrada:** El jugador mueve una pieza a una posición desde la cual ya no existe secuencia de movimientos que permita resolver el nivel (ej. pieza clave atrapada entre dos muros sin ángulo de salida).
+  - **Particularidad:** A diferencia de la caída en abismo, este estado no se detecta de forma trivial en tiempo real dentro del MVP, porque requeriría correr el solver BFS en cada movimiento del jugador (costoso y no planeado como validación runtime).
+  - **Mitigación Preventiva (nivel de diseño):** todo nivel se valida en la etapa de creación con el solver BFS mencionado en la matriz de riesgos, garantizando que existe al menos una secuencia de movimientos que lleva a la victoria.
+  - **Mitigación Reactiva (nivel de jugador):** si el jugador se queda sin movimientos útiles, la responsabilidad de salir del estado recae en el Undo y el Reinicio Rápido, no en una detección automática de "estás atascado".
+## 4. Mecánicas de Soporte para Manejo de Estados
+ 
+- **Undo Ilimitado (State Stack):**
+  - **Condición de Entrada:** Cualquier transición `IDLE → SLIDING` apila un snapshot completo del estado del tablero (posición y tipo de cada entidad) antes de ejecutar el movimiento.
+  - **Salida Concreta:** Presionar Undo desapila el último snapshot y restaura el tablero de forma síncrona e inmediata, sin animación de "rebobinado" complejo, para no penalizar el tiempo del jugador. No hay límite de usos.
+- **Reinicio Rápido (Quick Restart):**
+  - **Condición de Entrada:** Input de reinicio (botón o tecla asignada).
+  - **Salida Concreta:** Restaura el tablero al snapshot inicial del nivel (posición cero de la pila de Undo) en un solo input; sirve como salida de emergencia cuando el jugador prefiere empezar de nuevo en vez de deshacer movimiento por movimiento.
+## 5. Justificación de Coherencia
+ 
+El diseño de "sin derrota, solo estados reversibles" no es una simplificación arbitraria: está directamente alineado con el perfil de jugador definido en la Página 3 (Achiever de 10-15 años, sesiones cortas de 3-7 min, orientado a deducción sin presión externa). Castigar el error con pérdida de progreso contradecería la experiencia buscada de "concentración relajada" (*mindful puzzle solving*) y convertiría cada intento fallido en fricción en lugar de en información útil para la siguiente hipótesis del jugador, que es justamente el rol que cumple el error dentro del loop de "Deducción en Reversa" descrito en la Página 4.
+ 
 
----
+
 
 # PÁGINA 7
 
