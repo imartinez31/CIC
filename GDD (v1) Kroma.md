@@ -32,11 +32,53 @@
 * **¿Cuál es el riesgo técnico principal?** El manejo de bloqueos irreversibles (*deadlocks silenciosos*) y la verificación algorítmica de la solvencia matemática en el diseño de niveles.
 * **¿Por qué es viable en 3 meses?** Porque opera sobre una matriz discreta 2D en una sola pantalla estática (sin scroll, sin físicas complejas continuas, sin cinemáticas ni multijugador), permitiendo disponer de un *greybox* 100% jugable desde la primera semana[cite: 1, 2].
 
-# PÁGINA 2
+# PÁGINA 2: Historia y Narrativa Funcional
+
+### Enfoque Meat & Salt
+
+Siguiendo la filosofía de Scott Rogers ("si el gameplay es la carne del juego, la historia debe ser la sal"), Kroma adopta una narrativa mínima y funcional: no existen cinemáticas, diálogos ni texto de exposición. La "sal" narrativa se limita a nombrar y dar sentido temático a un sistema que, mecánicamente, ya funciona por sí solo sin necesidad de historia. Esta decisión no es una omisión, sino una postura de diseño deliberada: en un puzle de lógica espacial, cualquier "carne narrativa" adicional (personajes, diálogos, misiones secundarias) competiría por la atención del jugador contra el razonamiento deductivo que es el corazón de la experiencia, arriesgando diluir el estado de concentración relajada que busca el juego.
+
+### Mundo
+
+Kroma ocurre dentro de una **matriz digital suspendida**: un espacio abstracto, oscuro y monocromático que representa un sector de procesamiento en entropía. No hay geografía física reconocible ni personajes visibles — el "mundo" es literalmente el tablero de juego, y su transformación visual es la única forma en que la narrativa se manifiesta.
+
+### Premisa del conflicto
+
+Los buses de datos del sector están apagados por la desalineación de sus núcleos cromáticos: la energía que antes fluía de forma ordenada quedó fragmentada y dispersa en bloques de color aislados. El jugador no es un personaje dentro de este mundo, sino una fuerza externa de reordenamiento (un "operador" implícito, nunca nombrado ni representado) que restaura la alineación de los núcleos.
+
+### Justificación temática que apoya la jugabilidad
+
+Cada elemento narrativo fue elegido porque **describe literalmente una regla mecánica ya existente**, no porque añada contenido nuevo que el jugador deba recordar:
+
+- La "fragmentación de energía cromática" es la razón temática de que los bloques empiecen dispersos y sin relación entre sí — justifica el estado inicial caótico del tablero sin necesidad de una escena introductoria.
+- La "purificación y reactivación del módulo" (los pulsos de luz al completar un sector) es la traducción narrativa directa del estado de victoria ya definido mecánicamente (todas las metas ocupadas). No se trata de una recompensa narrativa añadida, sino del mismo evento de victoria vestido con lenguaje temático.
+- La transformación de cada bloque en **muro rígido** al encajar correctamente se lee narrativamente como "estabilización de un núcleo", lo cual refuerza —sin añadir una sola mecánica nueva— la sensación de que el tablero se va "curando" progresivamente, en lugar de simplemente llenando espacios.
+
+En síntesis: la narrativa de Kroma no dirige el diseño, lo *describe*. Esto es consistente con el Triángulo de la Extrañeza adaptado en la v1 del documento, donde se decidió mantener dos vértices familiares (objetos y mundo geométricamente simples y reconocibles) y concentrar toda la originalidad en un único vértice: las reglas del sistema (inercia infinita, síntesis cromática, metamorfosis topológica). Vale aclarar que esta es una adaptación del modelo original del Triángulo (Personajes / Mundo / Actividades) al contexto de un juego sin personajes ni actividades narrativas explícitas, sustituyendo el vértice de "Personajes" por "Reglas" como el eje de originalidad radical del proyecto.
 
 ---
 
-# PÁGINA 3
+# PÁGINA 3: Perfil de Jugador y Experiencia Buscada
+
+### Motivaciones del jugador
+
+**Taxonomía de LeBlanc (estética del juego):** Kroma apunta principalmente a tres de los ocho placeres del juego: **Challenge** (superación de problemas lógicos estructurados, sin pistas externas), **Discovery** (la deducción progresiva de las propiedades de combinación e inercia de cada bloque) y **Submission** (el estado de concentración y desconexión que produce resolver un sistema cerrado y determinista).
+
+**Taxonomía de Bartle:** el perfil describe al jugador objetivo como tipo **Achiever**, orientado al completismo de sectores sin ayuda externa. Es importante aclarar aquí una precisión metodológica: la taxonomía de Bartle fue formulada originalmente para mundos virtuales multijugador persistentes (MUDs), donde el arquetipo "Achiever" se define en relación con otros jugadores y con un mundo social compartido. Kroma es un juego de un solo jugador sin componente social ni multijugador, por lo que la etiqueta "Achiever" se usa aquí **no como aplicación literal del modelo de Bartle**, sino como descriptor prestado de estilo motivacional: un jugador que deriva satisfacción de dominar un sistema de reglas y completar objetivos medibles, independientemente de la ausencia de un contexto social. Esta precisión se deja explícita para evitar una cita incorrecta del marco teórico original.
+
+### Curva de atención y estructura de sesión
+
+El patrón de sesión objetivo es de tipo *bite-sized*: partidas de 3 a 7 minutos compuestas por niveles individuales de 45 a 90 segundos de duración. Esta estructura responde directamente al perfil demográfico (tweens y teens tempranos, 10 a 15 años), un rango etario con ventanas de atención sostenida más cortas que las de un público adulto, y con alta probabilidad de consumo en sesiones interrumpibles (recreos, transporte, tiempos de espera).
+
+Dado que el rango etario declarado cubre un espectro cognitivo amplio (un niño de 10 años y un adolescente de 15 años tienen capacidades de memoria de trabajo y control inhibitorio distintas), se propone que la curva de dificultad no sea uniforme, sino organizada en **bandas de calibración**:
+
+- **Banda introductoria (primeros sectores):** niveles que involucran únicamente la mecánica de Deslizar y Encajar, sin fusión cromática ni frenos de conveniencia, apta para el extremo inferior del rango etario.
+- **Banda intermedia:** introducción progresiva de Fusión y de la dinámica de Freno de Conveniencia, exigiendo el primer nivel de Deducción en Reversa.
+- **Banda avanzada:** niveles que combinan las tres dinámicas simultáneamente (Freno de Conveniencia, Mutación Topológica y Deducción en Reversa), dirigida al extremo superior del rango etario y a jugadores tipo Achiever que buscan reto sostenido.
+
+### Justificación de la estructura respecto a la audiencia
+
+La ausencia de castigo (sin vidas, sin cronómetro, Undo ilimitado) no es solo una decisión de accesibilidad general, sino una decisión específicamente calibrada para el rango etario declarado: al tratarse de jugadores jóvenes con tolerancia a la frustración aún en desarrollo, eliminar el costo del error permite que el *task switching* cognitivo (alternar entre razonamiento de color y cálculo vectorial de trayectorias, en términos de Dobrowolski et al.) ocurra en un entorno de bajo riesgo emocional, sin que el fallo mecánico se traduzca en fallo evaluativo. Esto sostiene la experiencia de **Submission** (concentración relajada) declarada como pilar central, incluso en los tramos de mayor exigencia lógica de la banda avanzada.
 
 ---
 
@@ -282,7 +324,60 @@ El diseño de "sin derrota, solo estados reversibles" no es una simplificación 
 
 ---
 
-# PÁGINA 9
+# PÁGINA 9: Interfaz de Usuario (UI/HUD) y Canales de Información
+
+### Wireframe de pantalla
+
+El diseño mantiene el viewport único y estático definido en la v1 del documento (sin scroll de cámara), válido tanto para orientación vertical móvil (9:16) como apaisada en PC:
+
+```text
++-------------------------------------------------------------+
+|  [|| Pausa]          SECTOR 02 - NODO 07        [↺ Reiniciar]|
+|                                                               |
+|                       [ Weenie Visual ]                      |
+|                                                               |
+|         +-----+-----+-----+-----+-----+-----+-----+          |
+|         |     |     |     |     |     | [M] |     |          |
+|         +-----+-----+-----+-----+-----+-----+-----+          |
+|         |     |  #  |     |     |     |     |     |          |
+|         +-----+-----+-----+-----+-----+-----+-----+          |
+|         |     |     | (B1)| ===>|     |  #  |     |          |
+|         +-----+-----+-----+-----+-----+-----+-----+          |
+|         |     |     |     |     | (B2)|     |     |          |
+|         +-----+-----+-----+-----+-----+-----+-----+          |
+|         |     |  X  |     |     |     |     | [G] |          |
+|         +-----+-----+-----+-----+-----+-----+-----+          |
+|                                                               |
+|                  ÁREA ACTIVA DE GESTOS / INPUT               |
+|                                                               |
+|  [ ↩ DESHACER (Undo) ]                      [ LUZ / ESTADO ]  |
++-------------------------------------------------------------+
+```
+
+### HUD (elementos permanentes)
+
+El HUD se mantiene minimalista, coherente con el pilar de "claridad y reducción del caos": solo cuatro elementos fijos, sin barras de vida ni temporizadores visibles: identificador de sector/nodo actual, botón de pausa, botón de reinicio rápido, y botón de deshacer (Undo) siempre accesible.
+
+### Feedforward (información previa a la acción)
+
+Antes de ejecutar un deslizamiento, el sistema debe comunicar de forma anticipada la trayectoria probable del bloque seleccionado: al tocar o seleccionar un bloque, se traza una guía visual tenue (línea punteada) en las cuatro direcciones cardinales, indicando hasta dónde llegaría el bloque si se desliza en cada una, sin necesidad de ejecutar el movimiento. Esta guía se actualiza dinámicamente si el estado del tablero cambia (por ejemplo, tras un movimiento previo que añadió un nuevo muro rígido). Este mecanismo es una forma de Control Indirecto (Rogers): reduce la carga de cálculo mental sin resolver el problema por el jugador, ya que solo muestra *dónde llegaría* el bloque, no si esa trayectoria es la correcta para resolver el nivel.
+
+### Feedback multimodal (información posterior a la acción)
+
+| Evento | Canal visual | Canal auditivo | Canal háptico (móvil) |
+|---|---|---|---|
+| Deslizamiento en curso | Animación fluida de traslado celda por celda | Sonido de "deslizamiento" continuo y sutil | Sin vibración (evento neutro) |
+| Colisión con muro / bloque inerte | Destello breve en el punto de impacto | Sonido corto y seco de "freno" | Vibración corta de baja intensidad |
+| Fusión cromática exitosa | Transición de color con partícula de mezcla | Tono ascendente de dos notas | Vibración media, doble pulso |
+| Encaje correcto en meta | El bloque se ilumina y se transforma visualmente en muro rígido; pulso de luz que recorre el circuito conectado | Acorde de confirmación (tono de "logro") | Vibración firme, pulso único |
+| Caída en abismo | El bloque se desvanece con partículas hacia el vacío | Sonido descendente de "pérdida de pieza" | Vibración larga de baja intensidad (señal de alerta, no de castigo) |
+| Nivel completado | Iluminación total del circuito, transición de fondo oscuro a fondo cromático activo | Tema musical corto de cierre | Vibración de patrón ascendente |
+
+La distinción deliberada entre la intensidad háptica de "caída en abismo" (alerta suave) y "colisión con muro" (evento neutro y frecuente) busca que el jugador perciba la diferencia entre un error recuperable sin fricción (Undo inmediato disponible) y una simple interacción normal del sistema, sin introducir una sensación de castigo que contradiga el pilar de "seguridad psicológica en la experimentación" definido en la Página 2 del documento.
+
+### Canal de estado general ("Luz / Estado")
+
+El indicador de "Luz / Estado" en la esquina inferior derecha del wireframe funciona como resumen de progreso del sector: su brillo aumenta proporcionalmente a la cantidad de metas ya encajadas, ofreciendo al jugador una referencia constante de avance sin necesidad de un contador numérico explícito, reforzando la lectura narrativa de "reactivación progresiva del módulo" definida en la Página 2.
 
 ---
 
