@@ -316,11 +316,584 @@ El diseño de "sin derrota, solo estados reversibles" no es una simplificación 
 
 
 
-# PÁGINA 7
+# PÁGINA 7: ALCANCE DEL MVP Y NIVELES DE CALIBRACIÓN
+
+## 1. Objetivo del MVP
+
+El MVP de **Kroma** tiene como propósito validar que la combinación de **desplazamiento inercial discreto, síntesis cromática y transformación topológica del tablero** produce situaciones de deducción espacial comprensibles, predecibles y progresivamente desafiantes.
+
+El prototipo no busca demostrar la cantidad de contenido que podría tener el producto final, sino comprobar que el **sistema base es suficientemente sólido para generar distintos niveles de complejidad sin incorporar nuevas mecánicas**.
+
+Para ello se desarrollarán inicialmente **tres niveles greybox**, todos construidos sobre la misma implementación de `grid[x][y]`, la misma Máquina de Estados Finita (FSM) y las mismas reglas atómicas de movimiento y colisión definidas en las páginas anteriores.
+
+Entre niveles no cambia el sistema; cambia únicamente la **configuración inicial del tablero y las relaciones espaciales entre bloques, obstáculos y receptores**.
 
 ---
 
-# PÁGINA 8
+## 2. Alcance Funcional del MVP
+
+El MVP deberá contener como mínimo los siguientes sistemas funcionales:
+
+* Tablero ortogonal de entre **5×5 y 8×8 celdas**.
+* Selección de bloques activos.
+* Entrada mediante **swipe cardinal** en móvil y **teclas direccionales** en teclado.
+* Desplazamiento inercial discreto.
+* Colisión contra muros, bordes y otros bloques.
+* Fusión de colores primarios compatibles.
+* Generación de colores secundarios.
+* Encaje de bloques en receptores compatibles.
+* Conversión de bloques `SLOTTED` en obstáculos rígidos.
+* Celdas nulas o abismos.
+* Undo ilimitado mediante pila de estados.
+* Reinicio rápido del nivel.
+* Detección de condición de victoria.
+* Transición al siguiente nivel.
+* Feedback visual y sonoro mínimo para movimiento, colisión, fusión, encaje y resolución.
+
+La arquitectura debe permitir representar un nivel principalmente como **datos de configuración de la matriz**, evitando código específico para cada escenario.
+
+---
+
+## 3. Nivel Greybox 01 — Deslizar y Encajar
+
+### Propósito de calibración
+
+Validar que el jugador comprende por sí mismo la regla fundamental de inercia:
+
+> **Una pieza no se mueve una celda: continúa avanzando hasta encontrar un elemento que detenga su trayectoria.**
+
+Este nivel corresponde a la **Banda Introductoria** definida en la Página 3.
+
+### Configuración
+
+* **Tamaño recomendado:** 5×5.
+* **Bloques activos:** 1.
+* **Receptores:** 1.
+* **Colores involucrados:** 1 color primario.
+* **Fusión:** No necesaria para resolver el nivel.
+* **Abismos:** Ninguno.
+* **Obstáculos:** Muros simples.
+* **Undo:** Disponible.
+* **Reinicio:** Disponible.
+
+### Secuencia cognitiva esperada
+
+El jugador identifica el bloque, observa su receptor y descubre que no puede posicionarlo libremente sobre cualquier celda. Debe utilizar los límites y obstáculos del tablero como superficies de frenado.
+
+La solución debe requerir al menos un cambio de dirección a 90°, evitando que un único swipe resuelva todo el nivel.
+
+### Mecánicas validadas
+
+`Seleccionar → Deslizar → Colisionar → Frenar → Redirigir → Encajar`
+
+### Criterio de éxito del diseño
+
+El nivel cumple su función si el jugador puede descubrir la relación entre **dirección, inercia y obstáculo** mediante experimentación, sin necesidad de una explicación textual extensa.
+
+El error debe ser reversible mediante Undo y nunca debe obligar a repetir una secuencia larga.
+
+---
+
+## 4. Nivel Greybox 02 — Síntesis Cromática
+
+### Propósito de calibración
+
+Introducir la segunda capa del sistema: un receptor secundario no siempre dispone inicialmente de una pieza compatible, por lo que el jugador debe **crear la pieza necesaria mediante fusión**.
+
+Este nivel corresponde a la **Banda Intermedia**.
+
+### Configuración
+
+* **Tamaño recomendado:** 6×6.
+* **Bloques activos:** 2 bloques primarios.
+* **Receptores:** 1 receptor secundario.
+* **Colores involucrados:** 2 primarios + 1 secundario resultante.
+* **Fusión:** Obligatoria.
+* **Abismos:** Opcionalmente 1, colocado de forma que comunique riesgo sin dominar el nivel.
+* **Obstáculos:** Muros y bordes.
+* **Undo:** Disponible.
+* **Reinicio:** Disponible.
+
+Ejemplo de relación cromática:
+
+`Rojo + Azul → Púrpura → Receptor Púrpura`
+
+### Secuencia cognitiva esperada
+
+El jugador primero identifica que ninguna pieza existente coincide con el receptor. Posteriormente debe inferir que dos bloques primarios pueden colisionar para sintetizar el color requerido.
+
+La dificultad espacial consiste en conseguir que ambos bloques se encuentren en una trayectoria válida y, después de la fusión, posicionar el bloque resultante en el receptor.
+
+### Mecánicas validadas
+
+`Analizar → Posicionar → Deslizar → Fusionar → Continuar/Frenar → Redirigir → Encajar`
+
+### Nueva dinámica introducida
+
+Aparece el **Freno de Conveniencia**.
+
+Una pieza puede utilizarse no únicamente como componente cromático, sino también como elemento espacial para provocar una colisión en una posición determinada.
+
+Por lo tanto, el jugador comienza a razonar simultáneamente sobre:
+
+**identidad cromática + posición + trayectoria.**
+
+### Criterio de éxito del diseño
+
+El nivel es válido si el jugador comprende que la fusión no constituye una acción independiente: es una **consecuencia determinista de organizar correctamente una colisión**.
+
+---
+
+## 5. Nivel Greybox 03 — Mutación Topológica y Deducción en Reversa
+
+### Propósito de calibración
+
+Validar la principal fuente de profundidad de Kroma: cada objetivo completado modifica permanentemente la geometría disponible para resolver los objetivos restantes.
+
+Este nivel representa la entrada a la **Banda Avanzada**.
+
+### Configuración
+
+* **Tamaño recomendado:** 7×7 u 8×8.
+* **Bloques activos:** 3–4.
+* **Receptores:** 2.
+* **Colores involucrados:** primarios y al menos un secundario.
+* **Fusión:** Obligatoria para al menos una meta.
+* **Abismos:** 1–2.
+* **Obstáculos:** Muros, bordes y piezas estabilizadas.
+* **Undo:** Disponible.
+* **Reinicio:** Disponible.
+
+### Estructura del problema
+
+El primer receptor no representa únicamente un objetivo parcial. Cuando una pieza entra en estado `SLOTTED`, se convierte en:
+
+`Meta completada → IsSolid = True → Nuevo obstáculo`
+
+La nueva pieza rígida modifica las trayectorias disponibles.
+
+Por ello, el orden de resolución se vuelve relevante.
+
+Una meta aparentemente conveniente de completar primero puede eliminar una trayectoria necesaria; de forma inversa, una pieza estabilizada puede convertirse deliberadamente en el **tope requerido para resolver otra trayectoria**.
+
+### Secuencia cognitiva esperada
+
+`Observar metas → Razonar desde la meta hacia atrás → Determinar orden → Preparar trayectoria → Fusionar → Encajar → Transformar tablero → Reevaluar → Resolver segunda meta`
+
+### Dinámicas validadas
+
+Este nivel combina simultáneamente:
+
+* **Freno de Conveniencia.**
+* **Mutación Topológica.**
+* **Deducción en Reversa.**
+
+El jugador ya no pregunta únicamente:
+
+> “¿Hacia dónde puedo mover esta pieza?”
+
+La pregunta que el diseño pretende provocar es:
+
+> “¿Dónde tendría que existir un obstáculo para que esta pieza termine exactamente aquí?”
+
+Esta inversión del razonamiento constituye una de las competencias centrales buscadas por Kroma.
+
+---
+
+## 6. Progresión de Complejidad
+
+Los tres niveles representan una progresión acumulativa:
+
+**Nivel 01**
+
+`Inercia → Frenado → Encaje`
+
+**Nivel 02**
+
+`Inercia → Colisión → Fusión → Encaje`
+
+**Nivel 03**
+
+`Inercia → Fusión → Encaje → Nuevo obstáculo → Reconfiguración → Segundo encaje`
+
+La dificultad aumenta mediante la **composición de reglas conocidas**, no mediante la incorporación constante de nuevos verbos.
+
+Esto permite comprobar si el sistema posee profundidad emergente suficiente para sostener futuros niveles.
+
+---
+
+## 7. Criterios de Validación del Greybox
+
+El greybox se considerará funcionalmente satisfactorio si permite comprobar los siguientes puntos:
+
+1. El jugador entiende que el movimiento es inercial y cardinal.
+2. Puede predecir dónde terminará una pieza antes de ejecutarla.
+3. Comprende la relación entre colores primarios y secundarios.
+4. Utiliza obstáculos como herramientas de posicionamiento.
+5. Reconoce que una pieza `SLOTTED` modifica el tablero.
+6. Utiliza Undo como herramienta de experimentación y no únicamente como recuperación de un error.
+7. Los tres niveles pueden completarse sin depender de azar, precisión motriz o tiempos de reacción.
+8. El solver puede confirmar que cada configuración inicial posee al menos una solución.
+
+No se busca medir todavía retención a largo plazo, monetización ni volumen de contenido. El objetivo es determinar si el **núcleo lógico de Kroma funciona como experiencia jugable**.
+
+---
+
+## 8. Justificación del Alcance
+
+Tres niveles son suficientes para la primera validación porque representan las tres capas fundamentales de complejidad del sistema:
+
+**Movimiento → Combinación → Transformación.**
+
+Si estas tres capas producen decisiones espaciales diferenciadas utilizando la misma implementación base, existe evidencia funcional para continuar ampliando el diseño de niveles.
+
+Si, por el contrario, el tercer nivel no genera una complejidad significativamente distinta del primero, el problema deberá resolverse modificando las reglas centrales antes de invertir recursos en contenido, arte o sistemas secundarios.
+
+---
+
+# PÁGINA 8: OUT OF SCOPE — SISTEMAS QUE NO ESTARÁN EN EL MVP
+
+## 1. Propósito de la Delimitación
+
+El MVP de **Kroma** busca validar una hipótesis específica:
+
+> **¿La combinación de inercia discreta, síntesis cromática y transformación topológica produce un puzle determinista comprensible y suficientemente profundo?**
+
+Todo sistema que no sea indispensable para responder esta pregunta queda fuera del alcance inicial.
+
+La exclusión de características no significa que estén descartadas del producto final. Significa que su implementación se posterga hasta demostrar que el **Core Loop** funciona correctamente.
+
+Esta delimitación protege el calendario de producción de tres meses y evita *scope creep* técnico y de diseño.
+
+---
+
+## 2. Mecánicas Fuera del MVP
+
+No se implementarán nuevos verbos principales más allá de:
+
+`Deslizar → Fusionar → Encajar`
+
+Por lo tanto, quedan fuera del MVP:
+
+* Saltos.
+* Rotación manual de piezas.
+* Teletransportadores.
+* Portales.
+* Interruptores.
+* Bloques móviles controlados simultáneamente.
+* Duplicación de bloques.
+* Destrucción manual de obstáculos.
+* Cambio manual de color.
+* Gravedad dinámica.
+* Movimiento diagonal.
+* Vectores de velocidad variables.
+* Bloques con aceleración o fricción.
+* Combinaciones cromáticas terciarias.
+* Fusiones sucesivas de bloques secundarios.
+
+### Justificación
+
+Cada verbo adicional aumenta el espacio de estados posibles del tablero y, en consecuencia, incrementa tanto la carga cognitiva del jugador como la complejidad del solver.
+
+El MVP debe comprobar primero cuánto espacio de diseño puede obtenerse mediante la combinación de las tres reglas centrales existentes.
+
+---
+
+## 3. Sistemas de Competencia y Puntuación Fuera del MVP
+
+No estarán presentes:
+
+* Puntuación numérica.
+* Sistema de estrellas.
+* Clasificación por número de movimientos.
+* Cronómetro competitivo.
+* Récords personales.
+* Leaderboards.
+* Rachas.
+* Combos.
+* Rankings entre jugadores.
+* Logros externos.
+
+La condición de éxito continuará siendo binaria:
+
+`Nivel no resuelto → Nivel resuelto`
+
+### Justificación
+
+Estos sistemas introducirían presión de optimización sobre una experiencia diseñada alrededor de **experimentación heurística y seguridad psicológica**.
+
+Durante el MVP interesa comprobar si el jugador disfruta resolviendo el sistema, no si puede resolverlo de manera competitivamente eficiente.
+
+---
+
+## 4. Sistemas de Penalización Fuera del MVP
+
+No existirán:
+
+* Vidas.
+* Energía limitada.
+* Penalización por Undo.
+* Límite de movimientos.
+* Game Over tradicional.
+* Pérdida permanente de progreso.
+* Reinicio automático por error.
+* Cronómetro de derrota.
+
+Los estados adversos seguirán siendo recuperables mediante:
+
+`Undo ilimitado + Reinicio rápido`
+
+### Justificación
+
+El error forma parte del proceso deductivo.
+
+Una trayectoria incorrecta debe proporcionar información al jugador acerca del funcionamiento del tablero, no convertirse en un castigo externo.
+
+---
+
+## 5. Sistemas de Ayuda Avanzada Fuera del MVP
+
+No se implementarán inicialmente:
+
+* Sistema automático de pistas.
+* Resolución parcial sugerida.
+* Visualización completa de la solución.
+* Predicción automática de deadlocks.
+* Ejecución del solver BFS después de cada movimiento.
+* Asistente adaptativo según desempeño.
+* Tutoriales textuales extensos.
+
+El solver se utilizará principalmente como **herramienta de validación durante el diseño de niveles**, no como asistente activo del jugador.
+
+### Justificación
+
+La detección runtime de estados irresolubles podría requerir búsquedas frecuentes sobre el espacio de estados y añadir complejidad innecesaria al primer prototipo.
+
+Además, ofrecer pistas automáticas demasiado pronto dificultaría evaluar si el **feedforward visual del propio tablero** es suficiente para comunicar las reglas.
+
+---
+
+## 6. Generación Procedural Fuera del MVP
+
+Los niveles serán diseñados manualmente.
+
+No se implementarán:
+
+* Generación procedural de tableros.
+* Generación automática basada en dificultad.
+* Solver utilizado como generador de contenido.
+* Niveles infinitos.
+* Daily Challenges.
+* Semillas compartidas.
+
+### Justificación
+
+Generar un tablero matemáticamente resoluble no garantiza que produzca un puzle interesante.
+
+Durante el MVP resulta más importante controlar deliberadamente las situaciones de aprendizaje y calibración que maximizar el volumen de contenido.
+
+---
+
+## 7. Multijugador y Sistemas Sociales Fuera del MVP
+
+Kroma será exclusivamente **single-player** durante esta etapa.
+
+Quedan excluidos:
+
+* Multijugador local.
+* Multijugador online.
+* PvP.
+* Resolución cooperativa.
+* Chat.
+* Amigos.
+* Perfiles públicos.
+* Comparación de puntuaciones.
+* Compartir soluciones dentro del juego.
+
+### Justificación
+
+Ninguno de estos sistemas es necesario para validar el Core Loop y todos introducirían infraestructura adicional de red, persistencia, sincronización y diseño social.
+
+---
+
+## 8. Persistencia y Metaprogresión Avanzada Fuera del MVP
+
+No se desarrollarán:
+
+* Árboles de progreso.
+* Experiencia o XP.
+* Monedas.
+* Economía interna.
+* Tienda.
+* Inventario.
+* Desbloqueables complejos.
+* Misiones diarias.
+* Pase de temporada.
+* Sistemas de recompensas acumulativas.
+
+La progresión del MVP será únicamente:
+
+`Nivel 1 → Nivel 2 → Nivel 3`
+
+### Justificación
+
+La motivación durante la validación debe provenir de **comprender y dominar las reglas**, no de recompensas extrínsecas añadidas alrededor del puzle.
+
+---
+
+## 9. Narrativa y Presentación Fuera del MVP
+
+En coherencia con el enfoque **Meat & Salt**, quedan fuera:
+
+* Cinemáticas.
+* Personajes jugables.
+* NPC.
+* Diálogos.
+* Árboles de conversación.
+* Lore coleccionable.
+* Misiones narrativas.
+* Escenarios tridimensionales.
+* Animaciones narrativas complejas.
+* Secuencias de introducción extensas.
+
+La narrativa permanecerá integrada directamente en el estado visual del tablero:
+
+`Sector apagado → Interacción → Estabilización → Sector activado`
+
+### Justificación
+
+La historia debe contextualizar la mecánica, no competir con ella por la atención del jugador.
+
+---
+
+## 10. Física y Tecnología Fuera del MVP
+
+No se utilizarán:
+
+* Simulación física continua.
+* RigidBodies para determinar resultados lógicos.
+* Colisiones dependientes de precisión física.
+* Movimiento basado en aceleración.
+* Física destructible.
+* Partículas con influencia sobre gameplay.
+* Simulación 3D.
+
+La lógica continuará siendo:
+
+`Estado discreto → Resolución matemática → Interpolación visual`
+
+Las animaciones pueden representar el movimiento, pero nunca determinar su resultado.
+
+---
+
+## 11. Decorado y Pulido Técnico Postergado
+
+Durante el greybox no constituyen prioridad:
+
+* VFX complejos.
+* Sistemas avanzados de partículas.
+* Shaders elaborados.
+* Iluminación dinámica compleja.
+* Transiciones cinematográficas.
+* Animaciones extensas.
+* Skins.
+* Personalización estética.
+* Música adaptativa multicapa.
+
+El greybox utilizará únicamente el feedback necesario para distinguir claramente:
+
+**movimiento, colisión, fusión, encaje, error y victoria.**
+
+El pulido visual se realizará únicamente después de confirmar que las reglas son comprensibles sin depender del espectáculo audiovisual.
+
+---
+
+## 12. Alcance Técnico Protegido
+
+La arquitectura del MVP queda reducida conceptualmente a los siguientes módulos:
+
+`Grid Manager`
+
+`↓`
+
+`Input Manager → FSM → Collision Resolver`
+
+`↓`
+
+`Color Merge System`
+
+`↓`
+
+`Slot / Topology System`
+
+`↓`
+
+`Win Condition`
+
+`↓`
+
+`Undo / Restart`
+
+El solver BFS funciona paralelamente como herramienta de validación de niveles.
+
+Todo módulo que no sea necesario para ejecutar esta cadena queda postergado.
+
+---
+
+## 13. Trade-off Principal del Alcance
+
+El principal trade-off del MVP es:
+
+> **Variedad de contenido vs. profundidad del sistema base.**
+
+Kroma sacrifica temporalmente cantidad de mecánicas, modos, recompensas y contenido para concentrar los recursos de producción en comprobar si un conjunto pequeño de reglas puede producir suficiente profundidad combinatoria.
+
+Esto implica que el primer prototipo puede percibirse visualmente limitado y ofrecer muy pocos niveles.
+
+A cambio, permite iterar rápidamente sobre el elemento de mayor riesgo del proyecto: **la calidad de los problemas espaciales producidos por sus reglas centrales**.
+
+---
+
+## 14. Regla de Control de Scope
+
+Durante la producción del MVP, cualquier nueva característica deberá superar la siguiente pregunta:
+
+> **¿Es necesaria para comprobar que inercia, síntesis cromática y transformación topológica producen un puzle funcional?**
+
+Si la respuesta es **no**, la característica se registra para una versión posterior y no entra al sprint actual.
+
+Esto aplica incluso si la característica es sencilla de implementar.
+
+El criterio de inclusión no será:
+
+> “¿Podemos programarlo?”
+
+Sino:
+
+> **“¿Necesitamos programarlo para validar el Core Loop?”**
+
+---
+
+## 15. Definición de MVP Terminado
+
+El MVP de Kroma podrá considerarse terminado cuando exista una versión jugable que permita:
+
+1. Cargar los tres niveles greybox definidos en la Página 7.
+2. Deslizar bloques mediante inputs cardinales.
+3. Resolver colisiones de forma completamente determinista.
+4. Fusionar colores primarios compatibles.
+5. Encajar bloques en receptores correctos.
+6. Convertir piezas estabilizadas en obstáculos.
+7. Resolver correctamente la transformación topológica del tablero.
+8. Utilizar Undo ilimitado.
+9. Reiniciar inmediatamente un nivel.
+10. Detectar la condición de victoria.
+11. Confirmar mediante solver que los niveles publicados poseen al menos una solución.
+12. Completar los tres niveles sin depender de sistemas que hayan sido clasificados como Out of Scope.
+
+En ese punto, el MVP habrá cumplido su función aunque todavía carezca de arte final, contenido extenso o metaprogresión.
+
+El siguiente ciclo de producción deberá decidirse a partir de los resultados de **playtesting del Core Loop**, y no simplemente por haber completado la implementación técnica.
 
 ---
 
